@@ -11,11 +11,11 @@ exports.isAuthenticated = (req, res, next) => {
   }
 
   jwt.verify(token, "myKey", function (err, decoded) {
-    req.user = decoded;
-    next();
     if (err) {
       return res.status(501).json({ msg: "User not authorized" });
     }
+    req.user = decoded;
+    next();
   });
 };
 

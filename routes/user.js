@@ -14,5 +14,5 @@ route.post(
   ],
   createUser
 );
-
+// TODO: endpoint to delete user
 module.exports = route;
