@@ -2,9 +2,10 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const app = express();
-
+const cors = require("cors");
 // MiddleWare
 app.use(bodyParser.json()); //or app.use(express.json({extended:true}))
+app.use(cors());
 
 // DataBase connection
 mongoose

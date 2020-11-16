@@ -18,6 +18,28 @@ exports.isAuthenticated = (req, res, next) => {
     next();
   });
 };
+exports.getAUser = (req, res, next) => {
+  const token = req.header("x-auth-token");
+
+  if (!token) {
+    return res.status(501).json({ msg: "User not authorized" });
+  }
+
+  jwt.verify(token, "myKey", function (err, decoded) {
+    if (err) {
+      return res.status(501).json({ msg: "User not authoriz ed" });
+    }
+
+    User.findById(decoded.payload.id)
+      .select("-password")
+      .then((user) => {
+        return res.json(user);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  });
+};
 
 exports.sigin = (req, res) => {
   const errors = validationResult(req);

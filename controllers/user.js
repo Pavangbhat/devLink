@@ -14,35 +14,37 @@ exports.createUser = (req, res) => {
 
   const { name, email, password } = req.body;
 
-  User.findOne({ email }).then((user) => {
-    if (user) {
-      return res
-        .status(500)
-        .json({ errors: [{ msg: "User already registerd" }] });
-    }
+  User.findOne({ email })
+    .then((user) => {
+      if (user) {
+        return res.json({ errors: [{ msg: "User already registerd" }] });
+      }
 
-    bcrypt.genSalt(10).then((salt) => {
-      bcrypt.hash(password, salt).then((hashedPassword) => {
-        var url = gravatar.url(email, { s: "200", r: "pg", d: "mm" });
-        user = new User({
-          name,
-          email,
-          password: hashedPassword,
-          avatar: url,
-        });
+      bcrypt.genSalt(10).then((salt) => {
+        bcrypt.hash(password, salt).then((hashedPassword) => {
+          var url = gravatar.url(email, { s: "200", r: "pg", d: "mm" });
+          user = new User({
+            name,
+            email,
+            password: hashedPassword,
+            avatar: url,
+          });
 
-        user.save();
+          user.save();
 
-        const payload = {
-          id: user._id,
-        };
+          const payload = {
+            id: user._id,
+          };
 
-        var token = jwt.sign({ payload, ita: 600000 }, "myKey");
+          var token = jwt.sign({ payload, ita: 600000 }, "myKey");
 
-        return res.status(200).json({
-          token,
+          return res.status(200).json({
+            token,
+          });
         });
       });
+    })
+    .catch((err) => {
+      return null;
     });
-  });
 };

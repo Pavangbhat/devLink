@@ -1,7 +1,7 @@
 const express = require("express");
 const route = express.Router();
 const { check } = require("express-validator");
-const { sigin } = require("../controllers/auth");
+const { sigin, getAUser } = require("../controllers/auth");
 
 route.post(
   "/auth",
@@ -11,5 +11,5 @@ route.post(
   ],
   sigin
 );
-
+route.get("/getUser", getAUser);
 module.exports = route;

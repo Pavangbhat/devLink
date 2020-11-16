@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-export const Signup = () => {
+import { connect } from "react-redux";
+import { setAlert } from "../../actions/alert";
+import { register } from "../../actions/auth";
+
+const Signup = ({ alert, setAlert, register, auth }) => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -17,10 +21,10 @@ export const Signup = () => {
   const onSubmitForm = (e) => {
     e.preventDefault();
     if (password !== password2) {
-      //TODO add alert
-      console.log("password doesnot match");
+      setAlert("password doesnot match", "danger");
+    } else {
+      register({ name, email, password });
     }
-    console.log(formData);
   };
 
   return (
@@ -94,3 +98,9 @@ export const Signup = () => {
     </>
   );
 };
+
+const mapStateToProps = (state) => {
+  return state;
+};
+
+export default connect(mapStateToProps, { setAlert, register })(Signup);

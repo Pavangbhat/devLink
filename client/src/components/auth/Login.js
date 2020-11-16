@@ -15,7 +15,6 @@ export const Login = () => {
 
   const onSubmitForm = (e) => {
     e.preventDefault();
-    console.log(formData);
   };
   return (
     <>
