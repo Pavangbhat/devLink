@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { setAlert } from "../../actions/alert";
 import { register } from "../../actions/auth";
@@ -13,6 +13,10 @@ const Signup = ({ alert, setAlert, register, auth }) => {
   });
 
   const { name, email, password, password2 } = formData;
+
+  if (auth.isAuthenticated) {
+    return <Redirect to="/dashboard" />;
+  }
 
   const changeText = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });

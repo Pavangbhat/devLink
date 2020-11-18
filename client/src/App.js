@@ -1,38 +1,43 @@
 import React, { useEffect } from "react";
 import "./App.css";
 import { Landing } from "./components/layout/Landing";
-import { Navbar } from "./components/layout/Navbar";
+import Navbar from "./components/layout/Navbar";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { Login } from "./components/auth/Login";
+import Login from "./components/auth/Login";
 import Signup from "./components/auth/Signup";
 import { Provider } from "react-redux";
 import store from "./store";
 import Alert from "./components/layout/Alert";
 import setHeader from "./utlis/setHeader";
 import { USER_LOADED, AUTH_ERROR } from "./actions/types";
+import { Dashboard } from "./components/layout/dashboard/Dashboard";
+import PrivateRoute from "./components/routing/PrivateRoute";
 const axios = require("axios").default;
 
 export const App = () => {
   if (localStorage.token) {
     setHeader(localStorage.token);
   }
+
   useEffect(() => {
     if (localStorage.token) {
       setHeader(localStorage.token);
     }
-    axios
-      .get("http://localhost:5000/api/getuser")
-      .then((user) => {
-        store.dispatch({
-          type: USER_LOADED,
-          payload: user.data,
+    if (localStorage.token) {
+      axios
+        .get("http://localhost:5000/api/getuser")
+        .then((user) => {
+          store.dispatch({
+            type: USER_LOADED,
+            payload: user.data,
+          });
+        })
+        .catch((err) => {
+          store.dispatch({
+            type: AUTH_ERROR,
+          });
         });
-      })
-      .catch((err) => {
-        store.dispatch({
-          type: AUTH_ERROR,
-        });
-      });
+    }
   }, []);
 
   return (
@@ -42,13 +47,17 @@ export const App = () => {
           <Navbar />
           <Route component={Landing} exact path="/" />
 
-          <Switch>
-            <section className="container">
-              <Alert />
+          <section className="container">
+            <Alert />
+            <Switch>
               <Route component={Login} exact path="/login" />
               <Route component={Signup} exact path="/signup" />
-            </section>
-          </Switch>
+              {/* <Route component={Dashboard} exact path="/dashboard" /> */}
+              <PrivateRoute path="/dashboard">
+                <Dashboard />
+              </PrivateRoute>
+            </Switch>
+          </section>
         </Router>
       </Provider>
     </>

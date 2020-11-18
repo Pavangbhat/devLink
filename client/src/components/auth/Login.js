@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
+import { login } from "../../actions/auth";
+import { connect } from "react-redux";
 
-export const Login = () => {
+const Login = ({ login, auth }) => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -9,26 +11,31 @@ export const Login = () => {
 
   const { email, password } = formData;
 
+  if (auth.isAuthenticated) {
+    return <Redirect to="/dashboard" />;
+  }
+
   const changeText = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const onSubmitForm = (e) => {
     e.preventDefault();
+    login(email, password);
   };
   return (
     <>
-      <h1 class="large text-primary">Login In</h1>
-      <p class="lead">
-        <i class="fas fa-user"></i> Log into Your Account
+      <h1 className="large text-primary">Login In</h1>
+      <p className="lead">
+        <i className="fas fa-user"></i> Log into Your Account
       </p>
       <form
-        class="form"
+        className="form"
         onSubmit={(e) => {
           onSubmitForm(e);
         }}
       >
-        <div class="form-group">
+        <div className="form-group">
           <input
             type="email"
             placeholder="Email Address"
@@ -40,7 +47,7 @@ export const Login = () => {
             }}
           />
         </div>
-        <div class="form-group">
+        <div className="form-group">
           <input
             type="password"
             placeholder="Password"
@@ -51,11 +58,17 @@ export const Login = () => {
             }}
           />
         </div>
-        <input type="submit" class="btn btn-primary" value="Login" />
+        <input type="submit" className="btn btn-primary" value="Login" />
       </form>
-      <p class="my-1">
+      <p className="my-1">
         Don't have an account? <Link to="/signup">Sign up</Link>
       </p>
     </>
   );
 };
+
+const mapStateToProps = (state) => {
+  return state;
+};
+
+export default connect(mapStateToProps, { login })(Login);

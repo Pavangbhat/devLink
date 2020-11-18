@@ -18,7 +18,8 @@ exports.isAuthenticated = (req, res, next) => {
     next();
   });
 };
-exports.getAUser = (req, res, next) => {
+
+exports.getAUser = (req, res) => {
   const token = req.header("x-auth-token");
 
   if (!token) {
@@ -27,7 +28,7 @@ exports.getAUser = (req, res, next) => {
 
   jwt.verify(token, "myKey", function (err, decoded) {
     if (err) {
-      return res.status(501).json({ msg: "User not authoriz ed" });
+      return res.status(501).json({ msg: "User not authorized" });
     }
 
     User.findById(decoded.payload.id)
@@ -54,16 +55,12 @@ exports.sigin = (req, res) => {
   User.findOne({ email })
     .then((user) => {
       if (!user) {
-        return res
-          .status(500)
-          .json({ errors: [{ msg: "Invalid credentials" }] });
+        return res.json({ errors: [{ msg: "Invalid credentials" }] });
       }
 
       bcrypt.compare(password, user.password).then((result) => {
         if (!result) {
-          return res
-            .status(500)
-            .json({ errors: [{ msg: "Invalid credentials" }] });
+          return res.json({ errors: [{ msg: "Invalid credentials" }] });
         }
 
         const payload = {
