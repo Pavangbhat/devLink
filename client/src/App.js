@@ -10,7 +10,7 @@ import store from "./store";
 import Alert from "./components/layout/Alert";
 import setHeader from "./utlis/setHeader";
 import { USER_LOADED, AUTH_ERROR } from "./actions/types";
-import { Dashboard } from "./components/layout/dashboard/Dashboard";
+import Dashboard from "./components/layout/dashboard/Dashboard";
 import PrivateRoute from "./components/routing/PrivateRoute";
 const axios = require("axios").default;
 
@@ -37,6 +37,10 @@ export const App = () => {
             type: AUTH_ERROR,
           });
         });
+    } else {
+      store.dispatch({
+        type: AUTH_ERROR,
+      });
     }
   }, []);
 

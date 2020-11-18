@@ -12,7 +12,7 @@ let initState = {
   token: localStorage.getItem("token"),
   isAuthenticated: null,
   user: null,
-  loading: false,
+  loading: true,
 };
 
 export default function (state = initState, action) {

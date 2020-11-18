@@ -6,7 +6,9 @@ const Alert = ({ alert }) =>
   alert !== null &&
   alert.length > 0 &&
   alert.map((alert) => (
-    <div className={`alert alert-${alert.alertType}`}>{alert.msg}</div>
+    <div className={`alert alert-${alert.alertType}`} key={alert.id}>
+      {alert.msg}
+    </div>
   ));
 
 export default connect((state) => state)(Alert);

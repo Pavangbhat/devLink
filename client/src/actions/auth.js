@@ -6,6 +6,9 @@ import {
   LOGIN_FAIL,
   LOGIN_SUCCESS,
   LOGOUT,
+  USER_LOADED,
+  AUTH_ERROR,
+  PROFILE_CLEAR,
 } from "./types";
 const axios = require("axios").default;
 
@@ -80,9 +83,32 @@ export const login = (email, password) => (dispatch) => {
       console.log("FROM ERROR", JSON.stringify(error));
     });
 };
-
+export const loadUser = () => (dispatch) => {
+  if (localStorage.token) {
+    axios
+      .get("http://localhost:5000/api/getuser")
+      .then((user) => {
+        dispatch({
+          type: USER_LOADED,
+          payload: user.data,
+        });
+      })
+      .catch((err) => {
+        dispatch({
+          type: AUTH_ERROR,
+        });
+      });
+  } else {
+    dispatch({
+      type: AUTH_ERROR,
+    });
+  }
+};
 export const logout = () => (dispatch) => {
   dispatch({
     type: LOGOUT,
+  });
+  dispatch({
+    type: PROFILE_CLEAR,
   });
 };

@@ -7,9 +7,9 @@ exports.getOwnProfile = (req, res) => {
     .populate("user", ["name", "avatar"])
     .then((profile) => {
       if (!profile) {
-        return res
-          .status(404)
-          .json({ errors: { msg: "There is no profile for this user" } });
+        return res.json({
+          errors: { msg: "There is no profile for this user" },
+        });
       }
       res.json(profile);
     })
