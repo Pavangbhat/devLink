@@ -1,5 +1,5 @@
 const express = require("express");
-const { check, validationResult } = require("express-validator");
+const { check } = require("express-validator");
 const { isAuthenticated } = require("../controllers/auth");
 const {
   getOwnProfile,
@@ -19,7 +19,17 @@ const Profile = require("../models/Profile");
 route.get("/profile/me", isAuthenticated, getOwnProfile);
 
 // Create or Update profile
-route.post("/profile", isAuthenticated, createOrUpdateProfile);
+route.post(
+  "/profile",
+  [
+    isAuthenticated,
+    [
+      check("status", "status is required").not().isEmpty(),
+      check("handle", "handle is required").not().isEmpty(),
+    ],
+  ],
+  createOrUpdateProfile
+);
 
 // Get all profiles
 route.get("/profiles", isAuthenticated, getAllProfile);

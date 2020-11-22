@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import "./App.css";
-import { Landing } from "./components/layout/Landing";
+import Landing from "./components/layout/Landing";
 import Navbar from "./components/layout/Navbar";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Login from "./components/auth/Login";
@@ -12,6 +12,8 @@ import setHeader from "./utlis/setHeader";
 import { USER_LOADED, AUTH_ERROR } from "./actions/types";
 import Dashboard from "./components/layout/dashboard/Dashboard";
 import PrivateRoute from "./components/routing/PrivateRoute";
+import CreateProfile from "./components/layout/profile-form/CreateProfile";
+import EditProfile from "./components/layout/profile-form/EditProfile";
 const axios = require("axios").default;
 
 export const App = () => {
@@ -59,6 +61,12 @@ export const App = () => {
               {/* <Route component={Dashboard} exact path="/dashboard" /> */}
               <PrivateRoute path="/dashboard">
                 <Dashboard />
+              </PrivateRoute>
+              <PrivateRoute path="/create-profile">
+                <CreateProfile />
+              </PrivateRoute>
+              <PrivateRoute path="/edit-profile">
+                <EditProfile />
               </PrivateRoute>
             </Switch>
           </section>

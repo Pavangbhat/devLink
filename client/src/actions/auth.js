@@ -41,6 +41,7 @@ export const register = ({ name, email, password }) => (dispatch) => {
           },
         });
       }
+      setHeader(token);
     })
     .catch(function (error) {
       console.log("FROM ERROR", JSON.stringify(error));
@@ -60,13 +61,14 @@ export const login = (email, password) => (dispatch) => {
   axios(config)
     .then(function (response) {
       const { errors, token } = response.data;
+
       if (errors) {
         errors.map((error) => {
           dispatch(setAlert(error.msg, "danger"));
           dispatch({
             type: LOGIN_FAIL,
           });
-          setHeader(token);
+          setHeader(null);
         });
       }
       if (token) {
@@ -81,6 +83,7 @@ export const login = (email, password) => (dispatch) => {
     })
     .catch(function (error) {
       console.log("FROM ERROR", JSON.stringify(error));
+      setHeader(null);
     });
 };
 export const loadUser = () => (dispatch) => {
@@ -111,4 +114,5 @@ export const logout = () => (dispatch) => {
   dispatch({
     type: PROFILE_CLEAR,
   });
+  setHeader(null);
 };

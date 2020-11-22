@@ -4,6 +4,7 @@ import { getUserProfile } from "../../../actions/profile";
 import Spinner from "../Spinner";
 import { Link } from "react-router-dom";
 import { loadUser } from "../../../actions/auth";
+import DashboardLinks from "./DashboardLinks";
 
 const Dashboard = ({ auth, profile, alert, getUserProfile, loadUser }) => {
   useEffect(() => {
@@ -11,18 +12,23 @@ const Dashboard = ({ auth, profile, alert, getUserProfile, loadUser }) => {
     getUserProfile();
   }, []);
 
-  console.log(auth);
   return profile.loading ? (
     <Spinner />
   ) : (
     <div>
-      <p className="lead text-muted">
-        Welcome {auth.user.name && auth.user.name}
-      </p>
-      <p>You have not yet setup a profile, please add some info</p>
-      <Link to="/create-profile" className="btn btn-lg btn-primary">
-        Create Profile
-      </Link>
+      <p className="lead text-muted">Welcome {auth.user && auth.user.name}</p>
+      {profile.profile !== null ? (
+        <>
+          <DashboardLinks />
+        </>
+      ) : (
+        <h1>
+          <p>You have not yet setup a profile, please add some info</p>
+          <Link to="/create-profile" className="btn btn-lg btn-primary">
+            Create Profile
+          </Link>
+        </h1>
+      )}
     </div>
   );
 };

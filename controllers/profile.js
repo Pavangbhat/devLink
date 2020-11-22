@@ -17,6 +17,12 @@ exports.getOwnProfile = (req, res) => {
 };
 
 exports.createOrUpdateProfile = (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.json({
+      errors: errors.array(),
+    });
+  }
   // Get fields
   const profileFields = {};
   profileFields.user = req.user.payload.id;
@@ -50,17 +56,22 @@ exports.createOrUpdateProfile = (req, res) => {
         { new: true }
       ).then((profile) => res.json(profile));
     } else {
-      // Check if handle exists
-      Profile.findOne({ handle: profileFields.handle }).then((profile) => {
-        // if (profile) {
-        //   let errors = {};
-        //   errors.handle = "That handle already exists";
-        //   res.status(400).json({ errors });
-        // }
+      // // Check if handle exists
+      // Profile.findOne({ handle: profileFields.handle }).then((profile) => {
+      //   // if (profile) {
+      //   //   let errors = {};
+      //   //   errors.handle = "That handle already exists";
+      //   //   res.status(400).json({ errors });
+      //   // }
 
-        // Save Profile
-        new Profile(profileFields).save().then((profile) => res.json(profile));
-      });
+      //   // Save Profile
+      //   const newProfile=new Profile(profileFields)
+      // });
+      const newProfile = new Profile(profileFields);
+      newProfile
+        .save()
+        .then((profile) => res.json({ profile }))
+        .catch((err) => res.json(err));
     }
   });
 };
@@ -102,7 +113,7 @@ exports.deleteAProfile = (req, res) => {
 exports.experienceInProfile = (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(400).json({
+    return res.json({
       errors: errors.array(),
     });
   }
