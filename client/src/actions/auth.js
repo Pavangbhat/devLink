@@ -9,6 +9,7 @@ import {
   USER_LOADED,
   AUTH_ERROR,
   PROFILE_CLEAR,
+  DELETE_ACCOUNT,
 } from "./types";
 const axios = require("axios").default;
 
@@ -86,6 +87,7 @@ export const login = (email, password) => (dispatch) => {
       setHeader(null);
     });
 };
+
 export const loadUser = () => (dispatch) => {
   if (localStorage.token) {
     axios
@@ -107,6 +109,7 @@ export const loadUser = () => (dispatch) => {
     });
   }
 };
+
 export const logout = () => (dispatch) => {
   dispatch({
     type: LOGOUT,
@@ -115,4 +118,22 @@ export const logout = () => (dispatch) => {
     type: PROFILE_CLEAR,
   });
   setHeader(null);
+};
+
+export const deleteAccount = () => (dispatch) => {
+  var config = {
+    method: "delete",
+    url: "http://localhost:5000/api/deleteAccount",
+  };
+  axios(config)
+    .then((response) => {
+      if (window.confirm("Are you sure this cannot be undone!")) {
+        dispatch(setAlert(response.data.msg));
+        dispatch({
+          type: PROFILE_CLEAR,
+        });
+        dispatch({ type: DELETE_ACCOUNT });
+      }
+    })
+    .catch((err) => err);
 };

@@ -1,4 +1,11 @@
-import { PROFILE_CLEAR, PROFILE_ERROR, PROFILE_LOADED } from "../actions/types";
+import {
+  DELETE_EDUCATION,
+  DELETE_EXPERIENCE,
+  PROFILE_CLEAR,
+  PROFILE_ERROR,
+  PROFILE_LOADED,
+  UPDATE_PROFILE,
+} from "../actions/types";
 
 const initialState = {
   profile: null,
@@ -11,6 +18,9 @@ const initialState = {
 export default function (state = initialState, action) {
   switch (action.type) {
     case PROFILE_LOADED:
+    case UPDATE_PROFILE:
+    case DELETE_EXPERIENCE:
+    case DELETE_EDUCATION:
       return {
         ...state,
         loading: false,

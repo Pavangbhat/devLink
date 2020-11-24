@@ -10,6 +10,7 @@ const {
   experienceInProfile,
   deleteAEducation,
   deleteAExperience,
+  educationInProfile,
 } = require("../controllers/profile");
 
 const route = express.Router();
@@ -73,7 +74,7 @@ route.put(
       check("from", "from is required").not().isEmpty(),
     ],
   ],
-  experienceInProfile
+  educationInProfile
 );
 
 // DELETE a educaton

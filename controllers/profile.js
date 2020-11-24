@@ -129,7 +129,7 @@ exports.experienceInProfile = (req, res) => {
   };
   Profile.findOne({ user: req.user.payload.id }).exec((err, profile) => {
     if (err) {
-      return res.status(500).json({ msg: err });
+      return res.json({ msg: err });
     }
     profile.experience.push(newExperience);
     profile.save();
@@ -158,7 +158,7 @@ exports.deleteAExperience = (req, res) => {
 exports.educationInProfile = (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(400).json({
+    return res.json({
       errors: errors.array(),
     });
   }
@@ -171,6 +171,7 @@ exports.educationInProfile = (req, res) => {
     current,
     description,
   } = req.body;
+
   let newEducation = {
     school,
     degree,

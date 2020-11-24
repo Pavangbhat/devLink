@@ -78,3 +78,13 @@ exports.sigin = (req, res) => {
       return res.status(500).json({ errors: [{ msg: "Invalid credentials" }] });
     });
 };
+
+exports.deleteAccount = (req, res) => {
+  User.findByIdAndDelete(req.user.payload.id)
+    .then(() => {
+      res.json({ msg: "User's account removed" });
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+};

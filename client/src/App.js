@@ -14,6 +14,8 @@ import Dashboard from "./components/layout/dashboard/Dashboard";
 import PrivateRoute from "./components/routing/PrivateRoute";
 import CreateProfile from "./components/layout/profile-form/CreateProfile";
 import EditProfile from "./components/layout/profile-form/EditProfile";
+import AddExperience from "./components/layout/profile-form/AddExperience";
+import AddEducation from "./components/layout/profile-form/AddEducation";
 const axios = require("axios").default;
 
 export const App = () => {
@@ -67,6 +69,12 @@ export const App = () => {
               </PrivateRoute>
               <PrivateRoute path="/edit-profile">
                 <EditProfile />
+              </PrivateRoute>
+              <PrivateRoute path="/add-experience">
+                <AddExperience />
+              </PrivateRoute>
+              <PrivateRoute path="/add-education">
+                <AddEducation />
               </PrivateRoute>
             </Switch>
           </section>

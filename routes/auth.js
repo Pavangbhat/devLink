@@ -1,7 +1,13 @@
+const { Router } = require("express");
 const express = require("express");
 const route = express.Router();
 const { check } = require("express-validator");
-const { sigin, getAUser } = require("../controllers/auth");
+const {
+  sigin,
+  getAUser,
+  deleteAccount,
+  isAuthenticated,
+} = require("../controllers/auth");
 
 route.post(
   "/auth",
@@ -13,3 +19,5 @@ route.post(
 );
 route.get("/getUser", getAUser);
 module.exports = route;
+
+route.delete("/deleteAccount", isAuthenticated, deleteAccount);
