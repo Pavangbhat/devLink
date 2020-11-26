@@ -16,6 +16,8 @@ import CreateProfile from "./components/layout/profile-form/CreateProfile";
 import EditProfile from "./components/layout/profile-form/EditProfile";
 import AddExperience from "./components/layout/profile-form/AddExperience";
 import AddEducation from "./components/layout/profile-form/AddEducation";
+import Profiles from "./components/profile/Profiles";
+import IndividualProfile from "./components/profile/IndividualProfile";
 const axios = require("axios").default;
 
 export const App = () => {
@@ -60,7 +62,8 @@ export const App = () => {
             <Switch>
               <Route component={Login} exact path="/login" />
               <Route component={Signup} exact path="/signup" />
-              {/* <Route component={Dashboard} exact path="/dashboard" /> */}
+              <Route component={Profiles} exact path="/profiles" />
+              <Route component={IndividualProfile} exact path="/profile/:id" />
               <PrivateRoute path="/dashboard">
                 <Dashboard />
               </PrivateRoute>

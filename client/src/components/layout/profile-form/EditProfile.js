@@ -96,6 +96,8 @@ const EditProfile = ({
     errors,
   } = formData;
 
+  // console.log(formData.bio);
+
   const toggleDisplaySocialInputs = () => {
     displaySocialInputs = !displaySocialInputs;
     setFormData({ ...formData, displaySocialInputs });

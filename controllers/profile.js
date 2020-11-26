@@ -1,4 +1,5 @@
 const { validationResult } = require("express-validator");
+const request = require("request");
 
 const Profile = require("../models/Profile");
 
@@ -27,13 +28,37 @@ exports.createOrUpdateProfile = (req, res) => {
   const profileFields = {};
   profileFields.user = req.user.payload.id;
   if (req.body.handle) profileFields.handle = req.body.handle;
-  if (req.body.company) profileFields.company = req.body.company;
-  if (req.body.website) profileFields.website = req.body.website;
-  if (req.body.location) profileFields.location = req.body.location;
-  if (req.body.bio) profileFields.bio = req.body.bio;
-  if (req.body.status) profileFields.status = req.body.status;
-  if (req.body.githubusername)
+
+  if (req.body.company) {
+    profileFields.company = req.body.company;
+  } else {
+    profileFields.company = "";
+  }
+  if (req.body.website) {
+    profileFields.website = req.body.website;
+  } else {
+    profileFields.website = "";
+  }
+  if (req.body.location) {
+    profileFields.location = req.body.location;
+  } else {
+    profileFields.location = "";
+  }
+  if (req.body.bio) {
+    profileFields.bio = req.body.bio;
+  } else {
+    profileFields.bio = "";
+  }
+  if (req.body.status) {
+    profileFields.status = req.body.status;
+  } else {
+    profileFields.status = "";
+  }
+  if (req.body.githubusername) {
     profileFields.githubusername = req.body.githubusername;
+  } else {
+    profileFields.githubusername = "";
+  }
   // Skills - Spilt into array
   if (typeof req.body.skills !== "undefined") {
     profileFields.skills = req.body.skills.split(",");
@@ -41,11 +66,31 @@ exports.createOrUpdateProfile = (req, res) => {
 
   // Social
   profileFields.social = {};
-  if (req.body.youtube) profileFields.social.youtube = req.body.youtube;
-  if (req.body.twitter) profileFields.social.twitter = req.body.twitter;
-  if (req.body.facebook) profileFields.social.facebook = req.body.facebook;
-  if (req.body.linkedin) profileFields.social.linkedin = req.body.linkedin;
-  if (req.body.instagram) profileFields.social.instagram = req.body.instagram;
+  if (req.body.youtube) {
+    profileFields.social.youtube = req.body.youtube;
+  } else {
+    profileFields.social.youtube;
+  }
+  if (req.body.twitter) {
+    profileFields.social.twitter = req.body.twitter;
+  } else {
+    profileFields.social.twitter;
+  }
+  if (req.body.facebook) {
+    profileFields.social.facebook = req.body.facebook;
+  } else {
+    profileFields.social.facebook;
+  }
+  if (req.body.linkedin) {
+    profileFields.social.linkedin = req.body.linkedin;
+  } else {
+    profileFields.social.linkedin;
+  }
+  if (req.body.instagram) {
+    profileFields.social.instagram = req.body.instagram;
+  } else {
+    profileFields.social.instagram;
+  }
 
   Profile.findOne({ user: req.user.payload.id }).then((profile) => {
     if (profile) {
@@ -83,7 +128,7 @@ exports.getAllProfile = (req, res) => {
       return res.json(profiles);
     })
     .catch((err) => {
-      return res.status(401).json({ err });
+      return res.json({ err });
     });
 };
 
@@ -207,4 +252,19 @@ exports.deleteAEducation = (req, res) => {
         return res.status(500).json({ msg: err });
       }
     });
+};
+
+exports.getGithubrepos = (req, res) => {
+  const options = {
+    uri: `https://api.github.com/users/${req.params.username}/repos?per_page=5&sort=created:asc`,
+    method: "GET",
+    headers: { "user-agent": "node.js" },
+  };
+  request(options, (error, response, body) => {
+    if (error) console.log(error);
+    if (response.statusCode !== 200) {
+      res.status(404).json({ msg: "No github profile found" });
+    }
+    res.json(JSON.parse(body));
+  });
 };

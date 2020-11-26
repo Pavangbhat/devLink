@@ -2,11 +2,70 @@ import { setAlert } from "../actions/alert";
 import {
   DELETE_EDUCATION,
   DELETE_EXPERIENCE,
+  GET_PROFILES,
+  PROFILE_CLEAR,
   PROFILE_ERROR,
   PROFILE_LOADED,
   UPDATE_PROFILE,
+  GET_PROFILE,
+  GET_REPOS,
 } from "./types";
 const axios = require("axios").default;
+
+export const getProfiles = () => (dispatch) => {
+  dispatch({ type: PROFILE_CLEAR });
+
+  var config = {
+    method: "get",
+    url: "http://localhost:5000/api/profiles",
+  };
+
+  axios(config)
+    .then(function (response) {
+      dispatch({
+        type: GET_PROFILES,
+        payload: response.data,
+      });
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+};
+export const getProfile = (userId) => (dispatch) => {
+  var config = {
+    method: "get",
+    url: `http://localhost:5000/api/profile/user/${userId}`,
+  };
+
+  axios(config)
+    .then(function (response) {
+      dispatch({
+        type: GET_PROFILE,
+        payload: response.data,
+      });
+    })
+    .catch(function (error) {
+      dispatch(setAlert("unable to load profile"));
+    });
+};
+
+export const getRepos = (githubUsername) => (dispatch) => {
+  var config = {
+    method: "get",
+    url: `http://localhost:5000/api/github/profile/${githubUsername}`,
+  };
+
+  axios(config)
+    .then(function (response) {
+      dispatch({
+        type: GET_REPOS,
+        payload: response.data,
+      });
+    })
+    .catch(function (error) {
+      dispatch(setAlert("Error getting user repos", "danger"));
+    });
+};
 
 export const getUserProfile = () => (dispatch) => {
   axios
@@ -28,9 +87,11 @@ export const getUserProfile = () => (dispatch) => {
       console.log(err);
     });
 };
+
 export const createOrUpdateProfile = (formData, history, edit = false) => (
   dispatch
 ) => {
+  console.log(formData);
   const data = JSON.stringify({ ...formData, handle: "tr" });
   var config = {
     method: "post",
@@ -146,6 +207,7 @@ export const deleteExperience = (id) => (dispatch) => {
       console.log(error);
     });
 };
+
 export const deleteEducation = (id) => (dispatch) => {
   var config = {
     method: "delete",

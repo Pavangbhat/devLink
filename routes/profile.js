@@ -11,6 +11,7 @@ const {
   deleteAEducation,
   deleteAExperience,
   educationInProfile,
+  getGithubrepos,
 } = require("../controllers/profile");
 
 const route = express.Router();
@@ -27,16 +28,17 @@ route.post(
     [
       check("status", "status is required").not().isEmpty(),
       check("handle", "handle is required").not().isEmpty(),
+      check("skills", "skills is required").not().isEmpty(),
     ],
   ],
   createOrUpdateProfile
 );
 
 // Get all profiles
-route.get("/profiles", isAuthenticated, getAllProfile);
+route.get("/profiles", getAllProfile);
 
 // Get a particular profile
-route.get("/profile/user/:user_id", isAuthenticated, getAParticularProfile);
+route.get("/profile/user/:user_id", getAParticularProfile);
 
 // Delete profile
 route.delete("/profile/delete", isAuthenticated, deleteAProfile);
@@ -83,5 +85,8 @@ route.delete(
   isAuthenticated,
   deleteAEducation
 );
+
+// GET github Profile
+route.get("/github/profile/:username", getGithubrepos);
 
 module.exports = route;
