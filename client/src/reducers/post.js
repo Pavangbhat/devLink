@@ -1,4 +1,11 @@
-import { DELETE_POST, GET_POSTS, UPDATE_LIKE } from "../actions/types";
+import {
+  ADD_POST,
+  DELETE_POST,
+  GET_POSTS,
+  GET_POST,
+  UPDATE_LIKE,
+  ADD_COMMENT,
+} from "../actions/types";
 
 const initState = {
   post: null,
@@ -24,11 +31,29 @@ export default function (state = initState, action) {
             : post;
         }),
       };
+    case ADD_POST:
+      return {
+        ...state,
+        loading: false,
+        posts: [action.payload, ...state.posts],
+      };
     case DELETE_POST:
       return {
         ...state,
         loading: false,
         posts: state.posts.filter((post) => post._id !== action.payload),
+      };
+    case GET_POST:
+      return {
+        ...state,
+        post: action.payload,
+        loading: false,
+      };
+    case ADD_COMMENT:
+      return {
+        ...state,
+        post: { ...state.post, comments: action.payload },
+        loading: false,
       };
     default:
       return state;

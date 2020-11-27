@@ -5,7 +5,8 @@ import { getProfile } from "../../actions/profile";
 import Spinner from "../layout/Spinner";
 import ProfileInfo from "./ProfileInfo";
 
-const IndividualProfile = ({ match, profile, auth, getProfile }) => {
+const IndividualProfile = ({ match, profile, auth, getProfile, history }) => {
+  console.log(history);
   useEffect(() => {
     getProfile(match.params.id);
   }, [match.params.id]);
@@ -13,11 +14,32 @@ const IndividualProfile = ({ match, profile, auth, getProfile }) => {
   return (
     <>
       {profile.profile === null ? (
-        <Spinner />
+        <>
+          {profile.loading ? (
+            <Spinner />
+          ) : (
+            <>
+              <h4>User Profile not found</h4>{" "}
+              <Link
+                onClick={() => {
+                  history.goBack();
+                }}
+                className="btn btn-light"
+              >
+                Go back
+              </Link>
+            </>
+          )}
+        </>
       ) : (
         <>
-          <Link to="/profiles" className="btn btn-light">
-            Go back to profiles
+          <Link
+            onClick={() => {
+              history.goBack();
+            }}
+            className="btn btn-light"
+          >
+            Go back
           </Link>
           {auth.isAuthenticated &&
             auth.loading === false &&

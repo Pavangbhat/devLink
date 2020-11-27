@@ -1,6 +1,7 @@
 const { validationResult } = require("express-validator");
 
 const Post = require("../models/Post");
+const User = require("../models/User");
 
 exports.createPost = (req, res) => {
   const errors = validationResult(req);
@@ -21,7 +22,9 @@ exports.createPost = (req, res) => {
   newPost
     .save()
     .then((post) => {
-      res.json(post);
+      Post.findById(post._id)
+        .populate("user", ["name", "avatar"])
+        .then((post) => res.json(post));
     })
     .catch((err) => {
       return res.send("Server error");

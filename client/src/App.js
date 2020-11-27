@@ -19,6 +19,7 @@ import AddEducation from "./components/layout/profile-form/AddEducation";
 import Profiles from "./components/profile/Profiles";
 import IndividualProfile from "./components/profile/IndividualProfile";
 import Posts from "./components/post/Posts";
+import Post from "./components/post/Post";
 const axios = require("axios").default;
 
 export const App = () => {
@@ -82,6 +83,9 @@ export const App = () => {
               </PrivateRoute>
               <PrivateRoute path="/posts">
                 <Posts />
+              </PrivateRoute>
+              <PrivateRoute path="/post/:postId">
+                <Post />
               </PrivateRoute>
             </Switch>
           </section>

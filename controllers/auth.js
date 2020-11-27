@@ -15,6 +15,17 @@ exports.isAuthenticated = (req, res, next) => {
       return res.status(501).json({ msg: "User not authorized" });
     }
     req.user = decoded;
+
+    User.findById(decoded.payload.id)
+      .populate("user", ["name", "avatar"])
+      .select("-password")
+      .then((user) => {
+        req.userinfo = {
+          name: user.name,
+          avatar: user.avatar,
+        };
+      })
+      .catch((err) => err);
     next();
   });
 };
