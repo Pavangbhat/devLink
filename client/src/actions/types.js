@@ -17,3 +17,4 @@ export const DELETE_ACCOUNT = "DELETE_ACCOUNT";
 export const GET_PROFILES = "GET_PROFILES";
 export const GET_REPOS = "GET_REPOS";
 export const GET_PROFILE = "GET_PROFILE";
+export const ADDCOMMENT = "ADDCOMMENT";
