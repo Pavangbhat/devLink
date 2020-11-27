@@ -84,8 +84,8 @@ exports.likeAPost = (req, res) => {
 
       post.likes.unshift({ user: req.user.payload.id });
 
-      post.save().then(() => {
-        return res.status(200).json({ msg: "Liked post" });
+      post.save().then((post) => {
+        return res.status(200).json(post.likes);
       });
     })
     .catch((err) => {
@@ -114,8 +114,8 @@ exports.unLikeAPost = (req, res) => {
 
       post.likes = updatedLikes;
 
-      post.save().then(() => {
-        return res.status(200).json({ msg: "unLiked post" });
+      post.save().then((post) => {
+        return res.status(200).json(post.likes);
       });
     })
     .catch((err) => {

@@ -28,7 +28,7 @@ route.get("/posts", isAuthenticated, getAllPost);
 route.get("/post/:id", isAuthenticated, getAPost);
 
 // Delete a post
-route.delete("/post/:id", isAuthenticated, deleteAPost);
+route.delete("/post/delete/:id", isAuthenticated, deleteAPost);
 
 // Like a post
 route.put("/post/like/:id", isAuthenticated, likeAPost);

@@ -18,6 +18,7 @@ import AddExperience from "./components/layout/profile-form/AddExperience";
 import AddEducation from "./components/layout/profile-form/AddEducation";
 import Profiles from "./components/profile/Profiles";
 import IndividualProfile from "./components/profile/IndividualProfile";
+import Posts from "./components/post/Posts";
 const axios = require("axios").default;
 
 export const App = () => {
@@ -78,6 +79,9 @@ export const App = () => {
               </PrivateRoute>
               <PrivateRoute path="/add-education">
                 <AddEducation />
+              </PrivateRoute>
+              <PrivateRoute path="/posts">
+                <Posts />
               </PrivateRoute>
             </Switch>
           </section>

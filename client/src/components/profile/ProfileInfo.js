@@ -1,10 +1,8 @@
 import React from "react";
 import Moment from "react-moment";
-import Spinner from "../layout/Spinner";
 import ProfileGithub from "./ProfileGithub";
 
 const ProfileInfo = ({ profile }) => {
-  console.log(profile);
   return (
     <>
       <div className="profile-grid my-1">
