@@ -3,13 +3,14 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const app = express();
 const cors = require("cors");
+require("dotenv").config();
 // MiddleWare
 app.use(bodyParser.json()); //or app.use(express.json({extended:true}))
 app.use(cors());
 
 // DataBase connection
 mongoose
-  .connect("mongodb://localhost:27017/devLink", {
+  .connect(process.env.MONGODB_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,

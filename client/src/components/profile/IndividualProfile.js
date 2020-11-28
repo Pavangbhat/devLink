@@ -6,20 +6,16 @@ import Spinner from "../layout/Spinner";
 import ProfileInfo from "./ProfileInfo";
 
 const IndividualProfile = ({ match, profile, auth, getProfile, history }) => {
-  console.log(history);
   useEffect(() => {
     getProfile(match.params.id);
   }, [match.params.id]);
 
   return (
     <>
-      {profile.profile === null ? (
+      {profile.loading || profile.profile == null ? (
         <>
-          {profile.loading ? (
-            <Spinner />
-          ) : (
+          {profile.profile == null ? (
             <>
-              <h4>User Profile not found</h4>{" "}
               <Link
                 onClick={() => {
                   history.goBack();
@@ -29,6 +25,8 @@ const IndividualProfile = ({ match, profile, auth, getProfile, history }) => {
                 Go back
               </Link>
             </>
+          ) : (
+            <Spinner />
           )}
         </>
       ) : (

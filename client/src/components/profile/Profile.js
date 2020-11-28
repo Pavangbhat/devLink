@@ -9,7 +9,7 @@ const Profile = ({ profile: { user, skills, company, location, status } }) => {
         <div>
           <h2>{user && user.name}</h2>
           <p>
-            {company && <span>{status}</span>} at <span>{company}</span>
+            {company !== "" && <span>{status} at</span>} <span>{company}</span>
           </p>
           <p>{location && location}</p>
           <Link to={`/profile/${user._id}`} className="btn btn-primary">
@@ -18,6 +18,8 @@ const Profile = ({ profile: { user, skills, company, location, status } }) => {
         </div>
 
         <ul>
+          <p>{skills.length > 0 && "Skills"}</p>
+
           {skills.length > 0 ? (
             <>
               {skills.slice(0, 4).map((skill, index) => (

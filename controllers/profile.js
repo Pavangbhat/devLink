@@ -27,7 +27,6 @@ exports.createOrUpdateProfile = (req, res) => {
   // Get fields
   const profileFields = {};
   profileFields.user = req.user.payload.id;
-  if (req.body.handle) profileFields.handle = req.body.handle;
 
   if (req.body.company) {
     profileFields.company = req.body.company;
@@ -101,17 +100,6 @@ exports.createOrUpdateProfile = (req, res) => {
         { new: true }
       ).then((profile) => res.json(profile));
     } else {
-      // // Check if handle exists
-      // Profile.findOne({ handle: profileFields.handle }).then((profile) => {
-      //   // if (profile) {
-      //   //   let errors = {};
-      //   //   errors.handle = "That handle already exists";
-      //   //   res.status(400).json({ errors });
-      //   // }
-
-      //   // Save Profile
-      //   const newProfile=new Profile(profileFields)
-      // });
       const newProfile = new Profile(profileFields);
       newProfile
         .save()

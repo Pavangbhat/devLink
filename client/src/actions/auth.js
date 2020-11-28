@@ -41,6 +41,9 @@ export const register = ({ name, email, password }) => (dispatch) => {
             token,
           },
         });
+        dispatch(
+          setAlert("User registerd successfully.Please login", "success")
+        );
       }
       setHeader(token);
     })

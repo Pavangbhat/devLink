@@ -95,7 +95,7 @@ export const createOrUpdateProfile = (formData, history, edit = false) => (
   dispatch
 ) => {
   console.log(formData);
-  const data = JSON.stringify({ ...formData, handle: "tr" });
+  const data = JSON.stringify({ ...formData });
   var config = {
     method: "post",
     url: "http://localhost:5000/api/profile",

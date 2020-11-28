@@ -14,8 +14,8 @@ const ProfileInfo = ({ profile }) => {
           />
           <h1 className="large">{profile.user && profile.user.name}</h1>
           <p className="lead">
-            {profile.status} {profile.company && "at"}{" "}
-            <span>{profile.company}</span>
+            {profile.status} {profile.company !== "" && "at"}{" "}
+            <span>{profile.company !== "" && profile.company}</span>
           </p>
           <p>{profile.location && profile.location}</p>
           <div className="icons my-1">

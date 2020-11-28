@@ -7,7 +7,6 @@ import { createOrUpdateProfile } from "../../../actions/profile";
 const CreateProfile = ({ createOrUpdateProfile, history }) => {
   const [formData, setFormData] = useState({
     displaySocialInputs: false,
-    handle: "",
     company: "",
     website: "",
     location: "",
@@ -25,7 +24,6 @@ const CreateProfile = ({ createOrUpdateProfile, history }) => {
 
   let {
     displaySocialInputs,
-    handle,
     company,
     website,
     location,

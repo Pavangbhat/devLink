@@ -20,6 +20,7 @@ import Profiles from "./components/profile/Profiles";
 import IndividualProfile from "./components/profile/IndividualProfile";
 import Posts from "./components/post/Posts";
 import Post from "./components/post/Post";
+import NotFoundPage from "./components/layout/NotFoundPage";
 const axios = require("axios").default;
 
 export const App = () => {
@@ -87,6 +88,7 @@ export const App = () => {
               <PrivateRoute path="/post/:postId">
                 <Post />
               </PrivateRoute>
+              <Route component={NotFoundPage} />
             </Switch>
           </section>
         </Router>

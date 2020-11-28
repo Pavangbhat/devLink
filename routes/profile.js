@@ -27,7 +27,6 @@ route.post(
     isAuthenticated,
     [
       check("status", "status is required").not().isEmpty(),
-      check("handle", "handle is required").not().isEmpty(),
       check("skills", "skills is required").not().isEmpty(),
     ],
   ],

@@ -3,6 +3,7 @@ const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const gravatar = require("gravatar");
 const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 exports.createUser = (req, res) => {
   const errors = validationResult(req);
@@ -36,7 +37,7 @@ exports.createUser = (req, res) => {
             id: user._id,
           };
 
-          var token = jwt.sign({ payload, ita: 600000 }, "myKey");
+          var token = jwt.sign({ payload, ita: 600000 }, process.env.MYKEY);
 
           return res.status(200).json({
             token,

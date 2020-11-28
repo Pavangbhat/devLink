@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const { validationResult } = require("express-validator");
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
+require("dotenv").config();
 
 exports.isAuthenticated = (req, res, next) => {
   const token = req.header("x-auth-token");
@@ -10,22 +11,12 @@ exports.isAuthenticated = (req, res, next) => {
     return res.status(501).json({ msg: "User not authorized" });
   }
 
-  jwt.verify(token, "myKey", function (err, decoded) {
+  jwt.verify(token, process.env.MYKEY, function (err, decoded) {
     if (err) {
       return res.status(501).json({ msg: "User not authorized" });
     }
     req.user = decoded;
 
-    User.findById(decoded.payload.id)
-      .populate("user", ["name", "avatar"])
-      .select("-password")
-      .then((user) => {
-        req.userinfo = {
-          name: user.name,
-          avatar: user.avatar,
-        };
-      })
-      .catch((err) => err);
     next();
   });
 };
@@ -37,7 +28,7 @@ exports.getAUser = (req, res) => {
     return res.status(501).json({ msg: "User not authorized" });
   }
 
-  jwt.verify(token, "myKey", function (err, decoded) {
+  jwt.verify(token, process.env.MYKEY, function (err, decoded) {
     if (err) {
       return res.status(501).json({ msg: "User not authorized" });
     }
@@ -78,7 +69,7 @@ exports.sigin = (req, res) => {
           id: user._id,
         };
 
-        var token = jwt.sign({ payload, ita: 600000 }, "myKey");
+        var token = jwt.sign({ payload, ita: 600000 }, process.env.MYKEY);
 
         return res.status(200).json({
           token,
