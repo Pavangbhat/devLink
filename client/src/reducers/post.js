@@ -5,6 +5,7 @@ import {
   GET_POST,
   UPDATE_LIKE,
   ADD_COMMENT,
+  REMOVE_COMMENT,
 } from "../actions/types";
 
 const initState = {
@@ -54,6 +55,17 @@ export default function (state = initState, action) {
         ...state,
         post: { ...state.post, comments: action.payload },
         loading: false,
+      };
+    case REMOVE_COMMENT:
+      return {
+        ...state,
+        loading: false,
+        post: {
+          ...state.post,
+          comments: state.post.comments.filter(
+            (comment) => comment._id !== action.commentId
+          ),
+        },
       };
     default:
       return state;

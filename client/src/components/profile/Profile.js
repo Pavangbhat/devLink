@@ -1,28 +1,18 @@
 import React from "react";
 import { Link } from "react-router-dom";
-const Profile = ({
-  profile: {
-    user: { name, avatar, _id },
-    skills,
 
-    company,
-
-    location,
-
-    status,
-  },
-}) => {
+const Profile = ({ profile: { user, skills, company, location, status } }) => {
   return (
     <div className="profiles">
       <div className="profile bg-light">
-        <img className="round-img" src={avatar} alt="" />
+        <img className="round-img" src={user.avatar} alt="" />
         <div>
-          <h2>{name && name}</h2>
+          <h2>{user && user.name}</h2>
           <p>
             {company && <span>{status}</span>} at <span>{company}</span>
           </p>
           <p>{location && location}</p>
-          <Link to={`/profile/${_id}`} className="btn btn-primary">
+          <Link to={`/profile/${user._id}`} className="btn btn-primary">
             View Profile
           </Link>
         </div>

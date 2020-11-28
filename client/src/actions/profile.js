@@ -57,10 +57,13 @@ export const getRepos = (githubUsername) => (dispatch) => {
 
   axios(config)
     .then(function (response) {
-      dispatch({
-        type: GET_REPOS,
-        payload: response.data,
-      });
+      if (response.data.message) {
+      } else {
+        dispatch({
+          type: GET_REPOS,
+          payload: response.data,
+        });
+      }
     })
     .catch(function (error) {
       dispatch(setAlert("Error getting user repos", "danger"));

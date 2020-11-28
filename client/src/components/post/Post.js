@@ -1,19 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { addComment, getPost } from "../../actions/post";
+import { addComment, deleteComment, getPost } from "../../actions/post";
 import { Link, useParams } from "react-router-dom";
 import Spinner from "../layout/Spinner";
 import Moment from "react-moment";
-import getNameAndAvatar from "../../utlis/getNameAndAvatar";
 
-const Post = ({ getPost, addComment, post: { post, loading } }) => {
+const Post = ({
+  getPost,
+  auth,
+  addComment,
+  deleteComment,
+  post: { post, loading },
+}) => {
   const { postId } = useParams();
   const [formData, setFormData] = useState({
     text: "",
+    name: "",
+    avatar: "",
   });
   useEffect(() => {
     getPost(postId);
-  }, [getPost]);
+  }, [getPost, post]);
 
   return (
     <>
@@ -21,6 +28,7 @@ const Post = ({ getPost, addComment, post: { post, loading } }) => {
         <Spinner />
       ) : (
         <>
+          {console.log()}
           <Link to="/posts" className="btn btn-light">
             Go back
           </Link>
@@ -42,7 +50,13 @@ const Post = ({ getPost, addComment, post: { post, loading } }) => {
             <form
               onSubmit={(e) => {
                 e.preventDefault();
-                addComment(post._id, formData);
+                const userAndAvatar = {
+                  name: auth.user.name,
+                  avatar: auth.user.avatar,
+                };
+
+                addComment(post._id, formData, userAndAvatar);
+                setFormData({ ...formData, text: "" });
               }}
               class="form my-1"
             >
@@ -66,10 +80,10 @@ const Post = ({ getPost, addComment, post: { post, loading } }) => {
                 <div class="comments">
                   <div class="post bg-white p-1 my-1">
                     <div>
-                      <Link to={`/profile/${comment.user._id}`}>
-                        <img class="round-img" src={""} alt="" />
+                      <Link to={`/profile/${comment.user}`}>
+                        <img class="round-img" src={comment.avatar} alt="" />
 
-                        <h4>{comment.user.name}</h4>
+                        <h4>{comment.name}</h4>
                       </Link>
                     </div>
                     <div>
@@ -78,6 +92,19 @@ const Post = ({ getPost, addComment, post: { post, loading } }) => {
                         Posted on{" "}
                         <Moment format="DD-MM-YYYY">{comment.date}</Moment>
                       </p>
+                      {!auth.loading &&
+                        auth.isAuthenticated &&
+                        auth.user._id === comment.user && (
+                          <button
+                            onClick={() => {
+                              deleteComment(post._id, comment._id);
+                            }}
+                            type="button"
+                            class="btn btn-danger"
+                          >
+                            <i class="fas fa-times"></i>
+                          </button>
+                        )}
                     </div>
                   </div>
                 </div>
@@ -92,4 +119,8 @@ const Post = ({ getPost, addComment, post: { post, loading } }) => {
   );
 };
 
-export default connect((state) => state, { getPost, addComment })(Post);
+export default connect((state) => state, {
+  getPost,
+  addComment,
+  deleteComment,
+})(Post);

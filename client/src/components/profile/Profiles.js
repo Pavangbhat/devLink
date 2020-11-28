@@ -5,10 +5,9 @@ import Spinner from "../layout/Spinner";
 import Profile from "./Profile";
 
 const Profiles = ({ getProfiles, profile }) => {
-  //   console.log(profile);
   useEffect(() => {
     getProfiles();
-  }, []);
+  }, [getProfiles]);
 
   return (
     <>
@@ -22,7 +21,9 @@ const Profiles = ({ getProfiles, profile }) => {
             developers
           </p>
           {profile.profiles.length > 0 ? (
-            profile.profiles.map((dev) => <Profile profile={dev} />)
+            profile.profiles.map((dev) =>
+              dev.user ? <Profile profile={dev} /> : <></>
+            )
           ) : (
             <h4>No profiles found</h4>
           )}

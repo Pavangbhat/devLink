@@ -5,6 +5,7 @@ import {
   ADD_POST,
   GET_POST,
   ADD_COMMENT,
+  REMOVE_COMMENT,
 } from "./types";
 import { setAlert } from "./alert";
 
@@ -124,8 +125,8 @@ export const getPost = (postId) => (dispatch) => {
     });
 };
 
-export const addComment = (postId, formData) => (dispatch) => {
-  var data = JSON.stringify(formData);
+export const addComment = (postId, formData, userAndAvatar) => (dispatch) => {
+  var data = JSON.stringify({ ...formData, ...userAndAvatar });
   console.log(formData);
   var config = {
     method: "put",
@@ -149,5 +150,24 @@ export const addComment = (postId, formData) => (dispatch) => {
       dispatch(
         setAlert("Post not found.User might have removed this post", "danger")
       );
+    });
+};
+
+export const deleteComment = (postId, commentId) => (dispatch) => {
+  var config = {
+    method: "put",
+    url: `http://localhost:5000/api/post/${postId}/comment/${commentId}`,
+  };
+
+  axios(config)
+    .then(function (response) {
+      dispatch({
+        type: REMOVE_COMMENT,
+        payload: commentId,
+      });
+      dispatch(setAlert("Comment removed", "success"));
+    })
+    .catch(function (error) {
+      dispatch(setAlert("Comment or Post not found", "danger"));
     });
 };

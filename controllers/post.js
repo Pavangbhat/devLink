@@ -1,7 +1,6 @@
 const { validationResult } = require("express-validator");
 
 const Post = require("../models/Post");
-const User = require("../models/User");
 
 exports.createPost = (req, res) => {
   const errors = validationResult(req);
@@ -138,8 +137,8 @@ exports.commentAPost = (req, res) => {
     text: req.body.text,
     title: req.body.title,
     user: req.user.payload.id,
-    name: req.user.payload.name,
-    avatar: req.user.payload.avatar,
+    name: req.body.name,
+    avatar: req.body.avatar,
   };
 
   Post.findById(req.params.id)
@@ -186,11 +185,11 @@ exports.deleteAComment = (req, res) => {
 
       post.comments = updatedComments;
 
-      post.save().then(() => {
-        return res.status(200).json({ msg: "comment removed successfully" });
+      post.save().then((post) => {
+        return res.status(200).json(post);
       });
     })
     .catch((err) => {
-      return res.send("Server error");
+      return res.status(400).send("Server error");
     });
 };
